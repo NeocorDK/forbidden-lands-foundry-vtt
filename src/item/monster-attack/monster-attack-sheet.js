@@ -24,11 +24,9 @@ export class ForbiddenLandsMonsterAttackSheet extends ForbiddenLandsItemSheet {
 			{ value: "slash", label: "ATTACK.SLASH" },
 			{ value: "blunt", label: "ATTACK.BLUNT" },
 			{ value: "fire", label: "ATTACK.FIRE" },
-			{ value: "wits", label: "ATTACK.WITS" },
 			{ value: "empathy", label: "ATTACK.EMPATHY" },
 			{ value: "endurance", label: "ATTACK.ENDURANCE" },
 			{ value: "fear", label: "ATTACK.FEAR" },
-			{ value: "non-typical", label: "ATTACK.NON_TYPICAL" },
 			{ value: "other", label: "ATTACK.OTHER" },
 		];
 

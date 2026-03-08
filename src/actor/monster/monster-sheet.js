@@ -78,6 +78,15 @@ export class ForbiddenLandsMonsterSheet extends ForbiddenLandsActorSheet {
 		if (attack.type !== "monsterAttack") return this.rollGear(attackId);
 
 		const gear = attack.getRollData();
+		const rawDamageType = String(attack.system?.damageType || "other")
+			.toLowerCase()
+			.trim();
+		const damageType =
+			rawDamageType === "wits"
+				? "fear"
+				: rawDamageType === "non-typical"
+					? "other"
+					: rawDamageType;
 		const rollOptions = this.getRollOptions();
 		const options = {
 			name: attack.name,
@@ -85,6 +94,7 @@ export class ForbiddenLandsMonsterSheet extends ForbiddenLandsActorSheet {
 			isAttack: true,
 			isMonsterAttack: true,
 			damage: Number(attack.damage || 0),
+			damageType,
 			gear,
 			attack: attack,
 			...rollOptions,

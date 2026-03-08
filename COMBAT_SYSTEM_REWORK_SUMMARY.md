@@ -27,6 +27,12 @@
 - when `Strength` drops to `0`: table by damage type (`Blunt/Slash/Stab`);
 - when `Wits` drops to `0`: `Horror Trauma` table;
 - when `Empathy` or `Agility` drops to `0`: no table is called.
+- Removed duplicate damage types from selectable lists:
+- removed `wits` (use `fear` instead);
+- removed `non-typical` (use `other` instead).
+- Kept compatibility for legacy values:
+- legacy `wits` is treated as `fear`;
+- legacy `non-typical` is treated as `other`.
 - All new UI labels and warnings were added through i18n (`lang/*.json`) without hardcoded strings.
 
 ## 2) Issues Found During Testing and Fixes
@@ -75,6 +81,10 @@
 - Root cause: blunt table was returned as default for all unknown types.
 - Fix: strength trauma tables are called only for `blunt/slash/stab`; no table for other types.
 
+- Issue: monster attacks always applied damage to `Strength` and damage type was not shown in chat.
+- Root cause: monster attack rolls did not pass `damageType` into `roll.options`.
+- Fix: `damageType` is now explicitly passed from monster attack item to roll options, with normalization for legacy values.
+
 ## 3) Short Technical Implementation Notes
 
 - Damage Type in attacks:
@@ -104,6 +114,7 @@
 
 - Damage type to attribute mapping:
 - Implemented in helper `getDamageAttribute` as `damageType -> attribute`.
+- `fear` is mapped to `wits` for character sheet damage application.
 
 - Dodge/Parry/Armor:
 - `Dodge` and `Parry` are executed through `actor.sheet.rollAction(...)`.
@@ -131,3 +142,7 @@
 - Added `ATTACK.*` options in `templates/components/modifiers-component.hbs`.
 - Added attack context (`damageType`, `attackCategory`, `attackAmmo`) and final damage computation with target modifiers (`+`, `-`, `*`, `/`) in `src/system/core/hooks.js`.
 - Passed additional identifiers into `rollArmor(...)` from `src/actor/actor-sheet.js` and `src/system/core/hooks.js` so conditional modifiers (for example against `stab`/`arrows`) affect armor rolls.
+
+- Monster attack damage-type propagation:
+- `src/actor/monster/monster-sheet.js`: `rollSpecificAttack(...)` now sets `options.damageType`.
+- `src/components/roll-engine/engine.js`: monster `fear` damage logic now checks `options.damageType` first (with fallback to legacy item field).

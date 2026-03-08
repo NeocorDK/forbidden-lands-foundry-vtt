@@ -396,6 +396,8 @@
 	"ROLL.PARRY_STAB": "Парировать колющий удар",
 	"ROLL.STANDING_DODGE": "Уклонение стоя",
 	"ROLL.WARNING_ACTION_FAILED": "Не удалось выполнить действие.",
+	"ROLL.WARNING_INVALID_DAMAGE_TYPE": "Невозможно применить урон: некорректный тип урона.",
+	"ROLL.WARNING_INVALID_DAMAGE_ATTRIBUTE": "Невозможно применить урон: у цели отсутствует корректный атрибут для урона.",
 	"ROLL.WARNING_NO_TARGET": "Автор броска не выбрал цель.",
 	"ROLL.WARNING_NOT_TARGET_OWNER": "У вас нет прав владельца на выбранную цель.",
 	"ROLL.WARNING_PARRY_NO_SHIELD_RANGED": "Нельзя парировать дальнюю атаку без экипированного щита.",

@@ -28,7 +28,7 @@ export class FBLRollHandler extends FormApplication {
 		this.skill = skill;
 		this.gear = gear;
 		this.damage = options.damage || gear.damage;
-		this.damageType = options.damageType || gear.damageType || "non-typical";
+		this.damageType = options.damageType || gear.damageType || "other";
 		this.artifact = gear?.artifactDie;
 		this.gears = options.gears || [];
 		this.modifier =
@@ -846,10 +846,12 @@ export class FBLRoll extends YearZeroRoll {
 	}
 
 	get damage() {
-		if (
-			this.options?.isMonsterAttack &&
-			this.options?.attack?.system?.damageType === "fear"
-		) {
+		const damageType = String(
+			this.options?.damageType || this.options?.attack?.system?.damageType || "",
+		)
+			.toLowerCase()
+			.trim();
+		if (this.options?.isMonsterAttack && damageType === "fear") {
 			return this.attackSuccess;
 		}
 

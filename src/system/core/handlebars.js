@@ -41,7 +41,7 @@ function registerHandlebarsHelpers() {
 			case "fire":
 				return game.i18n.localize("ATTACK.FIRE");
 			case "non-typical":
-				return game.i18n.localize("ATTACK.NON_TYPICAL");
+				return game.i18n.localize("ATTACK.OTHER");
 			case "slash":
 				return game.i18n.localize("ATTACK.SLASH");
 			case "stab":
@@ -49,7 +49,7 @@ function registerHandlebarsHelpers() {
 			case "other":
 				return game.i18n.localize("ATTACK.OTHER");
 			case "wits":
-				return game.i18n.localize("ATTACK.WITS");
+				return game.i18n.localize("ATTACK.FEAR");
 		}
 	});
 	Handlebars.registerHelper("armorPart", (part) => {

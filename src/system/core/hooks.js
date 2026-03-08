@@ -151,13 +151,14 @@ async function postRollWarning(localizationKey) {
 	});
 }
 
-function getDamageAttribute(actor, damageType = "non-typical") {
+function getDamageAttribute(actor, damageType = "other") {
 	const type = String(damageType || "").toLowerCase();
 	if (type === "empathy") return "empathy";
 	if (type === "wits" || type === "fear") return "wits";
 	if (type === "endurance") return "agility";
-	// stab/slash/blunt/fire/non-typical/default
-	return "strength";
+	if (["stab", "slash", "blunt", "fire", "non-typical", "other"].includes(type))
+		return "strength";
+	return null;
 }
 
 function getCriticalInjuryTableByDamageType(damageType = "blunt") {
@@ -277,6 +278,18 @@ async function applyDamageToTarget(actor, roll) {
 	const attribute = getDamageAttribute(actor, roll.options.damageType);
 
 	if (!damage) return;
+	if (!attribute) {
+		await postRollWarning("ROLL.WARNING_INVALID_DAMAGE_TYPE");
+		return;
+	}
+	if (
+		!actor.system?.attribute ||
+		!(attribute in actor.system.attribute) ||
+		typeof actor.system.attribute?.[attribute]?.value !== "number"
+	) {
+		await postRollWarning("ROLL.WARNING_INVALID_DAMAGE_ATTRIBUTE");
+		return;
+	}
 
 	const currentValue = Number(actor.system?.attribute?.[attribute]?.value ?? 0);
 	const newValue = Math.max(currentValue - damage, 0);

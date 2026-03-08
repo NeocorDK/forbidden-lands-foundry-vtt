@@ -411,6 +411,8 @@
 	"ROLL.PARRY_STAB": "Parry a Stab",
 	"ROLL.STANDING_DODGE": "Standing dodge",
 	"ROLL.WARNING_ACTION_FAILED": "Could not execute this action.",
+	"ROLL.WARNING_INVALID_DAMAGE_TYPE": "Could not apply damage: invalid damage type.",
+	"ROLL.WARNING_INVALID_DAMAGE_ATTRIBUTE": "Could not apply damage: target has no valid damage attribute.",
 	"ROLL.WARNING_NO_TARGET": "No target selected by the roll author.",
 	"ROLL.WARNING_NOT_TARGET_OWNER": "You are not the owner of the selected target.",
 	"ROLL.WARNING_PARRY_NO_SHIELD_RANGED": "Cannot parry a ranged attack without an equipped shield.",
