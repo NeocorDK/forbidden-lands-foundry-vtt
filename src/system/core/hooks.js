@@ -208,6 +208,8 @@ async function tryRunRollOnTable(tableName) {
 }
 
 async function tryTriggerTraumaTable(actor, attribute, damageType) {
+	if (actor?.type === "monster") return;
+
 	const currentValue = Number(actor.system?.attribute?.[attribute]?.value ?? 0);
 	if (currentValue > 0) return;
 

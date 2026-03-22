@@ -27,6 +27,8 @@
 - when `Strength` drops to `0`: table by damage type (`Blunt/Slash/Stab`);
 - when `Wits` drops to `0`: `Horror Trauma` table;
 - when `Empathy` or `Agility` drops to `0`: no table is called.
+- Armor successes now reduce `damage` (1 success = -1 damage) instead of reducing `attackSuccess`.
+- Trauma rolls are now skipped for targets of type `monster` even when health drops to `0`.
 - Removed duplicate damage types from selectable lists:
 - removed `wits` (use `fear` instead);
 - removed `non-typical` (use `other` instead).
@@ -81,6 +83,14 @@
 - Root cause: blunt table was returned as default for all unknown types.
 - Fix: strength trauma tables are called only for `blunt/slash/stab`; no table for other types.
 
+- Issue: armor successes were reducing attack successes instead of reducing damage.
+- Root cause: `armorSuccess` was subtracted in `attackSuccess` getter.
+- Fix: moved armor mitigation to `damage` getter (`-1 damage` per armor success), keeping attack success logic based on attack vs defense only.
+
+- Issue: trauma could still trigger on monsters when attributes dropped to zero.
+- Root cause: trauma trigger path did not exclude monster actors.
+- Fix: added explicit guard to skip trauma processing for `actor.type === "monster"`.
+
 - Issue: monster attacks always applied damage to `Strength` and damage type was not shown in chat.
 - Root cause: monster attack rolls did not pass `damageType` into `roll.options`.
 - Fix: `damageType` is now explicitly passed from monster attack item to roll options, with normalization for legacy values.
@@ -102,6 +112,7 @@
 - Attack recalculation after defense:
 - Attack state stores `defenseSuccess`, `armorSuccess`, `armorFailure`, and usage flags.
 - Final successes/damage are computed through roll getters (`attackSuccess`, `damage`) with defensive modifiers.
+- `attackSuccess` is reduced by defense only; `armorSuccess` reduces `damage` directly.
 - Push flow synchronizes linked defense rolls back into the original attack message.
 
 - Visibility and permission constraints:
@@ -128,6 +139,7 @@
 - Trauma tables:
 - After damage, checks for attribute transition `>0 -> 0`.
 - For `Strength`, picks trauma table by damage type (`Blunt/Slash/Stab`); for `Wits`, uses `Horror Trauma`.
+- Monster targets are excluded from trauma rolls.
 - Table execution order: `globalThis.rollOnTable` -> macro `rollOnTable` -> fallback `game.tables.getName(...).draw`.
 
 - Automatic arrows roll:

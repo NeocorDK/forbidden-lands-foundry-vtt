@@ -841,8 +841,7 @@ export class FBLRoll extends YearZeroRoll {
 	get attackSuccess() {
 		if (!this.options?.isAttack) return this.successCount;
 		const defenseSuccess = Number(this.options?.defenseSuccess || 0);
-		const armorSuccess = Number(this.options?.armorSuccess || 0);
-		return Math.max(this.successCount - defenseSuccess - armorSuccess, 0);
+		return Math.max(this.successCount - defenseSuccess, 0);
 	}
 
 	get damage() {
@@ -852,13 +851,15 @@ export class FBLRoll extends YearZeroRoll {
 			.toLowerCase()
 			.trim();
 		if (this.options?.isMonsterAttack && damageType === "fear") {
-			return this.attackSuccess;
+			const armorSuccess = Number(this.options?.armorSuccess || 0);
+			return Math.max(this.attackSuccess - armorSuccess, 0);
 		}
 
 		const modifier = this.type === "spell" ? 0 : -1;
-		return (
+		const baseDamage =
 			(this.options.damage || 0) + Math.max(this.attackSuccess + modifier, 0)
-		);
+		const armorSuccess = Number(this.options?.armorSuccess || 0);
+		return Math.max(baseDamage - armorSuccess, 0);
 	}
 
 	get gearDamageByName() {
